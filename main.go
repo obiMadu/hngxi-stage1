@@ -107,7 +107,7 @@ func main() {
 		}
 
 		var ipWeatherInfo ipWeatherInfo
-		if resp.StatusCode != 200 {
+		if resp.StatusCode == 200 {
 			if err := json.NewDecoder(resp.Body).Decode(&ipWeatherInfo); err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"status":  "error",
