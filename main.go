@@ -89,14 +89,14 @@ func main() {
 
 		// get temperation info from OpenWeatherMap
 		// get latitude and longitude
-		var lat, lon string
+		var lat, lon float64
 		fmt.Sscanf(ipLocInfo.Loc, "%f,%f", &lat, &lon)
 
 		// get api key from environment
 		apiKey := os.Getenv("OPENWEATHERMAP_APIKEY")
 
 		// call OpenWeatherMap
-		url = fmt.Sprintf("%s?lat=%s&lon=%s&appid=%s&units=metric", ipWeatherURL, lat, lon, apiKey)
+		url = fmt.Sprintf("%s?lat=%f&lon=%f&appid=%s&units=metric", ipWeatherURL, lat, lon, apiKey)
 		resp, err = http.Get(url)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -116,9 +116,15 @@ func main() {
 				return
 			}
 		} else {
+			var errResp map[string]any
+			_ = json.NewDecoder(resp.Body).Decode(&errResp)
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"status":  "error",
 				"message": "got an error response from weather api",
+				"error": gin.H{
+					"responseCode": resp.StatusCode,
+					"error":        errResp,
+				},
 			})
 			return
 		}
