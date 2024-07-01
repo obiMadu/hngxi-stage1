@@ -127,7 +127,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{
 			"client_ip": ip,
 			"location":  ipLocInfo.City,
-			"greeting":  fmt.Sprintf("Hello, %s!, the temperature is %.0f degrees Celcius in %s", visitor_name, ipWeatherInfo.Main.Temp, ipLocInfo.City),
+			"greeting":  fmt.Sprintf("Hello, %s!, the temperature is %f degrees Celcius in %s", visitor_name, ipWeatherInfo.Main.Temp, ipLocInfo.City),
 		})
 	})
 
